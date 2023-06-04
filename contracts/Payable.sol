@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.18;
 
 // paybleが定義されたfunctionやaddressのみetherを受け取ることができる
@@ -13,12 +15,12 @@ contract Payable{
   function withdraw() public{
     uint amount = address(this).balance;
 
-    (bool success, ) = owner.call(value: amount)("");
-    require(sucess, "failed to send Ether");
+    (bool success, ) = owner.call{value: amount}("");
+    require(success, "failed to send Ether");
   }
 
   function transfer(address payable _to, uint _amount) public{
-    (bool sucess, ) = _to.call(value: amount)(");
-    require(sucess, "failed to send Ether");
+    (bool success, ) = _to.call{value: _amount}("");
+    require(success, "failed to send Ether");
   }
 }
