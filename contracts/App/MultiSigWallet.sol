@@ -51,7 +51,7 @@ contract MultiSigWallet{
   }
 
   modifier notConfirmed(uint _txIndex){
-    require(isConfirmed[_txIndex][msg.sender], "tx already confirmed");
+    require(!isConfirmed[_txIndex][msg.sender], "tx already confirmed");
     _;
   }
 
@@ -97,8 +97,8 @@ contract MultiSigWallet{
   }
   // txnの実行 
   function executeTransaction(uint256 _txIndex) public onlyOwner txExists(_txIndex)  notExecuted(_txIndex) {
-    Transaction memory transaction = transactions[_txIndex];
-    require(transaction.numConfirmations >= numConfirmationsRequired, "not enough confirmation");
+    Transaction storage transaction = transactions[_txIndex];
+    require(transaction.numConfirmations >= numConfirmationsRequired, "Not enough confirmation");
     transaction.executed = true;
 
     (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
@@ -126,6 +126,12 @@ contract MultiSigWallet{
     Transaction memory txn = transactions[_txIndex];
 
     return(txn.to, txn.value, txn.data, txn.executed, txn.numConfirmations);
+  }
+
+
+  function execute(address payable contractAddress, uint256 value, bytes memory data ) public {
+
+    (bool success, bytes memory data2) = contractAddress.call{value: value}(data);
   }
 }
 
