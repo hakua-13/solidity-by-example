@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.18;
 
 // 反復可能なmappingを作成する例
 library IterableMapping {
@@ -59,6 +59,7 @@ contract TestIterableMap{
   using IterableMapping for IterableMapping.Map;
 
   IterableMapping.Map private map;
+
 
   function testIterableMap() public {
     map.set(address(0), 0);
